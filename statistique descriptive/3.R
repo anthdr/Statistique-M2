@@ -1,4 +1,3 @@
-install.packages("tidyverse")
 library(tidyverse)
 library(ggplot2)
 #create data
@@ -40,3 +39,5 @@ ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ, y = hwy, colour = displ < 5)) +
   geom_point(shape = 21, colour = "black", fill = "white", size = 5, stroke = 5)
 #if we don't use a variable name, the aesthetic will map itself to the x axis
+
+#3.5.1

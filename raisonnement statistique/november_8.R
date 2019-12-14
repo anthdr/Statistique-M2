@@ -1,3 +1,4 @@
+setwd("D:/Gdrive/Github/Statistique-M2/raisonnement statistique")
 load("spr_english.rda")
 spr <- spr_english
 spr$logRT <- log(spr$RT)
@@ -141,3 +142,4 @@ for (i in 1:N_ITER) {
 stat_obs <- mean(spr_gram$logRT) - mean(spr_ungram$logRT)
 hist(statistiques, col="yellow", xlim=c(-0.2, 0.2))
 abline(v=stat_obs, col="blue")
+

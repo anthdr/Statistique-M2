@@ -1,0 +1,23 @@
+---
+title: "Hedier - Projet Final"
+author: "Antoine Hedier"
+date: "28 décembre 2019"
+output: html_document
+---
+
+The data I'm using is the pre-treated results of one of my master's thesis experiment.
+
+```{import, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+

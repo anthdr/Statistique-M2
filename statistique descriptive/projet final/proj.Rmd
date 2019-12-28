@@ -185,16 +185,27 @@ ggplot(data=data.highcomp) +
 
 Here again, no major differencies are observed.
 
-I now plot high-attachments in the efficient group with good responses for 
-both 
+
+I now plot high-attachments in the efficient group with good responses for both completion and equation response time. 
+
 
 ```{r}
-datamath.onlygood.low <- filter(datamath.onlygood, datamath.onlygood$halfsession == 0)
-datamath.onlygood.secondhalf <- filter(datamath.onlygood, datamath.onlygood$halfsession == 1)
-ggplot(data=datamath.onlygood.firsthalf) +
+datamath.onlygood.loweq <- filter(datamath.onlygood, datamath.onlygood$RT.equation < mean.eq)
+datamath.onlygood.higheq <- filter(datamath.onlygood, datamath.onlygood$RT.equation > mean.eq)
+datamath.onlygood.lowcomp <- filter(datamath.onlygood, datamath.onlygood$RT.completion < mean.comp)
+datamath.onlygood.highcomp <- filter(datamath.onlygood, datamath.onlygood$RT.completion > mean.comp)
+ggplot(data=datamath.onlygood.loweq) +
   geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
-  ggtitle("Efficient in math with only correct answers, first half")
-ggplot(data=datamath.onlygood.secondhalf) +
+  ggtitle("Efficient in math with only correct answers, low equation time")
+ggplot(data=datamath.onlygood.higheq) +
   geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
-  ggtitle("Efficient in math with only correct answers, second half") 
+  ggtitle("Efficient in math with only correct answers, high equation time") 
+ggplot(data=datamath.onlygood.lowcomp) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Efficient in math with only correct answers, low completion time")
+ggplot(data=datamath.onlygood.highcomp) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Efficient in math with only correct answers, high completion time") 
 ```
+
+

@@ -5,20 +5,196 @@ date: "28 décembre 2019"
 output: html_document
 ---
 
-The data I'm using is the pre-treated results of one of my master's thesis experiment.
+The data I'm using is the pre-treated and simplified results of one of my master's thesis experiment, it is a completion experiment with an equation before each uncompleted sentence.
+Uncompleted sentence ended with a complex dp (NP1 of NP2) and a "qui" which forces the use of a relative clause.
+Equations were supposed to prime either a high or low attachment (respectively, NP1 or NP2).
 
-```{import, include=FALSE}
-setwd("D:/Gdrive/Github/Statistique-M2/statistique descriptive/projet final")
-data <- read.csv(file="data.csv", header=TRUE, sep=",")
+Here, I'm reproducing the exploratory statistics I did in my master's thesis.
+Though I'm not supposed to have previous knowledge of the data, my (secret) goal is to have more high-attachment on the "percep" and "high" Condition.
+
+```{r}
+data <- read.csv(file="https://raw.githubusercontent.com/anthdr/Statistique-M2/master/statistique%20descriptive/projet%20final/data.csv", header=TRUE, sep=",")
 ```
 
+The variable "id"" refers to a unique and single participant of this experiment.
+Condition indicates sentences and condition the declination of this sentence: the first word ("percep" or "stat") refers to the nature of the verb used in the uncompleted sentence and the second word ("high" or "low") refers to the nature of the equation prime.
+"rep.equation" is the answer of the participant to the equation.
+"res equation" is the correct (and expected) answer to the equation.
+"cor.equation" is 1 if the participant answer matchs the correct answer, 0 if not.
+"amount.cor.equation" is the sum of total responses for a given participant
+"RT.equation" is the time used by the participant to answer.
+"completion" contains the raw completion of the participant.
+"nbr.NP1" is the number of the first NP in the complex NP in the uncompleted sentence.
+"nbr.comp" is the number of the verb used in the participant completion.
+"attachment" is 1 if the attachment of the relative clause (written by the participant) have a high-attachment, 0 if low.
+"RT.completion" is the time used by the participant to complete the sentence.
+"halfsession" is 0 for the first half of the experiment and 1 for the second half.
+"age" is the age of the participant.
 
+Here is all the packages I will need.
 
-```{setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+library(dplyr)
+library(ggplot2)
 ```
 
+I first plot good responses for each participant
+
+```{r}
+ggplot(data=data) +
+  geom_bar(mapping = aes(x = id, y = cor.equation), stat  = "summary")
+```
+
+We can see that there is variablity in data
+
+Second, I plot attachment for each participant
+
+```{r}
+ggplot(data=data) +
+  geom_bar(mapping = aes(x = id, y = attachment), stat  = "summary")
+```
+
+Once again, there is variability in the data.
+
+Then, I plot attachment for each condition
+
+```{r}
+ggplot(data=data) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat = "summary") +
+  ggtitle("Overall")
+```
+
+We can see that the condition percep returns more high-attachments than the stat condition.
+
+I now plot the same graph (attachment for each condition) but with only correct answers to equation.
+
+```{r}
+data.onlygood <- filter(data, data$cor.equation == 1)
+ggplot(data=data.onlygood) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Overall with only correct answers")
+```
+
+The graph with and without wrong answers to equation respects the same pattern except for the stat condition: correct answers lead a slightly more high-attachments for the low condition.
+
+To continue, I will split the data in two. Participant that are efficient to resolve equations and the others.
+To determine good participants, I will select those who have below 50% of correct answers.
+
+```{r}
+datamath <- filter(data, data$amount.cor.equation > 14)
+datanomath <- filter(data, data$amount.cor.equation <= 14)
+```
+
+Then I plot those two groups.
+
+```{r}
+ggplot(data=datamath) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Efficient in math")
+ggplot(data=datanomath) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Non-efficient in math") 
+```
+
+These are globally the same results, the only different trend is that the efficient group have slightly more high-attachments for the low condition whereas the non-efficient group have slightly more high-attachment for the high condition.
+
+Next, I will select only correct answers to equation to report high-attachment (for both groups), and directly plot them.
+
+```{r}
+datamath.onlygood <- filter(datamath, datamath$cor.equation == 1)
+datanomath.onlygood <- filter(datanomath, datanomath$cor.equation == 1)
+ggplot(data=datamath.onlygood) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Efficient in math with only correct answers")
+ggplot(data=datanomath.onlygood) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Non-efficient in math with only correct answers") 
+```
+
+The graph of the efficient group in math with and without good responses follow the same pattern.
+The non-efficient group shows a drop of high attachment in the low condition. However, this graph is plotted on a very limited set of trials (68).
+
+Continuing with the efficient group with good answers, I plot the first and second half of the experiment.
+
+```{r}
+datamath.onlygood.firsthalf <- filter(datamath.onlygood, datamath.onlygood$halfsession == 0)
+datamath.onlygood.secondhalf <- filter(datamath.onlygood, datamath.onlygood$halfsession == 1)
+ggplot(data=datamath.onlygood.firsthalf) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Efficient in math with only correct answers, first half")
+ggplot(data=datamath.onlygood.secondhalf) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Efficient in math with only correct answers, second half") 
+```
+
+I can see that data in the first half yield more high attachment in the low condition.
+In the second half, no major differencies are observed. Percep returned slightly more high-attachment in the high condition than the low.
+
+To see if we can observe such observation on all participant, I plot with all trials with good answers, first and second half
+
+```{r}
+data.onlygood.firsthalf <- filter(data.onlygood, data.onlygood$halfsession == 0)
+data.onlygood.secondhalf <- filter(data.onlygood, data.onlygood$halfsession == 1)
+ggplot(data=data.onlygood.firsthalf) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Overall with only correct answers, first half")
+ggplot(data=data.onlygood.secondhalf) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Overall in math with only correct answers, second half") 
+```
+
+We observe the same tendency, but once again, this may be due to the fact that only a small portion of correct answers within the non-efficient group are present.
 
 
 
+On a new approach on this dataset, I will use reaction times to see if there are differences.
+I first determine the mean reaction time of both equation and completion (median could have been used aswell)
 
+```{r}
+mean.comp <- mean(data$RT.completion)
+mean.eq <- mean(data$RT.completion)
+```
+
+I First split groups between low and high equation RT and directly plot it
+
+```{r}
+data.loweq <- filter(data, data$RT.equation < mean.eq)
+data.higheq <- filter(data, data$RT.equation > mean.eq)
+ggplot(data=data.loweq) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Overall with low response time in equation")
+ggplot(data=data.higheq) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Overall with high response time in equation") 
+```
+
+No major differencies are observed.
+
+Second, I split groups between low and high completion RT and directly plot it
+
+```{r}
+data.lowcomp <- filter(data, data$RT.completion < mean.comp)
+data.highcomp <- filter(data, data$RT.completion > mean.comp)
+ggplot(data=data.lowcomp) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Overall with low response time in completion")
+ggplot(data=data.highcomp) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Overall with high response time in completion") 
+```
+
+Here again, no major differencies are observed.
+
+I now plot high-attachments in the efficient group with good responses for 
+both 
+
+```{r}
+datamath.onlygood.low <- filter(datamath.onlygood, datamath.onlygood$halfsession == 0)
+datamath.onlygood.secondhalf <- filter(datamath.onlygood, datamath.onlygood$halfsession == 1)
+ggplot(data=datamath.onlygood.firsthalf) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Efficient in math with only correct answers, first half")
+ggplot(data=datamath.onlygood.secondhalf) +
+  geom_bar(mapping = aes(x = Condition, y = attachment), stat  = "summary") +
+  ggtitle("Efficient in math with only correct answers, second half") 
+```

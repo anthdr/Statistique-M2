@@ -1,3 +1,16 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{blank correction}
+\author{antoinehdr }
+\date{January 2020}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
 ---
 title: "Hedier - Projet Final"
 author: "Antoine Hedier"
@@ -6,13 +19,13 @@ output: html_document
 ---
 
 The data I'm using is the pre-treated and simplified results of one of my master's thesis experiment, it is a completion experiment with an equation before each uncompleted sentence.
-Uncompleted sentence ended with a complex dp (NP1 of NP2) and a "qui" which forces the use of a relative clause.
+Uncompleted sentence ended with a complex Denominal Phrase (NP1 of NP2) and a "qui" which forces the use of a relative clause.
 Equations were supposed to prime either a high or low attachment (respectively, NP1 or NP2).
 
 Here, I'm reproducing the exploratory statistics I did in my master's thesis.
 Though I'm not supposed to have previous knowledge of the data, my (secret) goal is to have more high-attachments on the "percep" and "high" condition.
-High condition is is characterized by the equation shown and calculated before completion, it is supposed to prime a high-attachment (NP1). 
-The percep condition is characterized by a perception verb in the uncompleted sequence, perception verbs induce the possibility of pseudo-relatives which are prefered to relative clauses and bypass them for interpretation. The structure of a pseudo-relative is different than a relative clause (the PR is in a sisterhood relation with the NP compared to a embeded relation for relative clause) so we expect no differences between high and low condition within the percep condition.
+High condition is characterized by the equation shown and calculated before completion, it is supposed to prime a high-attachment (NP1). 
+The percep condition is characterized by a perception verb in the uncompleted sequence, perception verbs induce the possibility of pseudo-relatives which are preferred to relative clauses and bypass them for interpretation. The structure of a pseudo-relative is different than a relative clause (the PR is in a sisterhood relation with the NP compared to a embedded relation for relative clause) so we expect no differences between high and low condition within the percep condition.
 
 ```{r}
 data <- read.csv(file="https://raw.githubusercontent.com/anthdr/Statistique-M2/master/statistique%20descriptive/projet%20final/data.csv", header=TRUE, sep=",")
@@ -22,7 +35,7 @@ The variable "id"" refers to a unique and single participant of this experiment.
 Condition indicates sentences and condition the declination of this sentence: the first word ("percep" or "stat") refers to the nature of the verb used in the uncompleted sentence and the second word ("high" or "low") refers to the nature of the equation prime.
 "rep.equation" is the answer of the participant to the equation.
 "res equation" is the correct (and expected) answer to the equation.
-"cor.equation" is 1 if the participant answer matchs the correct answer, 0 if not.
+"cor.equation" is 1 if the participant answer matches the correct answer, 0 if not.
 "amount.cor.equation" is the sum of total responses for a given participant
 "RT.equation" is the time used by the participant to answer.
 "completion" contains the raw completion of the participant.
@@ -47,7 +60,7 @@ ggplot(data=data) +
   geom_bar(mapping = aes(x = id, y = cor.equation), stat  = "summary")
 ```
 
-We can see that there is variablity in data throughout participants.
+We can see that there is variability in data throughout participants.
 
 Second, I plot attachment for each participant
 
@@ -133,7 +146,7 @@ ggplot(data=datamath.onlygood.secondhalf) +
 
 I can see that data in the first half yield more high-attachments in the low condition.
 Percep still return more high-attachments than stat.
-In the second half, no differencies are shown between the high and low condition within the stat condition. Percep returned more high-attachment in the high condition than the low.
+In the second half, no differences are shown between the high and low condition within the stat condition. Percep returned more high-attachments in the high condition than the low.
 
 To see if we can observe such observation on all participant, I plot with all trials with good answers, first and second half
 
@@ -153,7 +166,7 @@ We observe the same tendency, but once again, this may be due to the fact that o
 
 
 On a new approach on this dataset, I will use reaction times to see if there are differences.
-I first determine the mean reaction time of both equation and completion (median could have been used aswell)
+I first determine the mean reaction time of both equation and completion (median could have been used as well)
 
 ```{r}
 mean.comp <- mean(data$RT.completion)
@@ -173,7 +186,7 @@ ggplot(data=data.higheq) +
   ggtitle("Overall with high response time in equation") 
 ```
 
-No major differencies are observed for the stat condition.
+No major differences are observed for the stat condition.
 However, low response time in equation return more high-attachments in the high condition and high response time return more high-attachments in the low condition (equation for the percep condition should not impact attachment, but we see that response time for equation have a greater impact for the percep condition than the stat condition).
 
 
@@ -190,12 +203,12 @@ ggplot(data=data.highcomp) +
   ggtitle("Overall with high response time in completion") 
 ```
 
-Here again, no major differencies are observed but I will still talk about these little tendencies in accordance for my theory.
+Here again, no major differences are observed but I will still talk about these little tendencies in accordance for my theory.
 High response time in completion yields more high-attachments in the high condition, the interpretation of a pseudo-relative seems to rise to over time.
-Low response time in completion yields more hjgh-attachments in the high condition, the effect of priming seems to decay over time.
+Low response time in completion yields more high-attachments in the high condition, the effect of priming seems to decay over time.
 
 
-I now plot high-attachments in the efficient group with good responses for both completion and equation response time. 
+I now plot high-attachment in the efficient group with good responses for both completion and equation response time. 
 
 ```{r}
 datamath.onlygood.loweq <- filter(datamath.onlygood, datamath.onlygood$RT.equation < mean.eq)
@@ -217,5 +230,8 @@ ggplot(data=datamath.onlygood.highcomp) +
 ```
 
 We can see that low completion and low equation time give essentially the same pattern: the percep condition return more high-attachment (with slight difference for equation) and low condition returns more high-attachments within the stat condition.
-As for the high completion and equation time, the percep low condition returns a very high amount of high-attachment (this contradict what I plotted just before, the interpretation of the pseudo-relative does not rise over time).
+As for the high completion and equation time, the percep low condition returns a very high amount of high-attachments (this contradict what I plotted just before, the interpretation of the pseudo-relative does not rise over time).
 
+
+
+\end{document}

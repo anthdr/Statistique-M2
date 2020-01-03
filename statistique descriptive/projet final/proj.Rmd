@@ -10,7 +10,9 @@ Uncompleted sentence ended with a complex dp (NP1 of NP2) and a "qui" which forc
 Equations were supposed to prime either a high or low attachment (respectively, NP1 or NP2).
 
 Here, I'm reproducing the exploratory statistics I did in my master's thesis.
-Though I'm not supposed to have previous knowledge of the data, my (secret) goal is to have more high-attachment on the "percep" and "high" Condition.
+Though I'm not supposed to have previous knowledge of the data, my (secret) goal is to have more high-attachments on the "percep" and "high" condition.
+High condition is is characterized by the equation shown and calculated before completion, it is supposed to prime a high-attachment (NP1). 
+The percep condition is characterized by a perception verb in the uncompleted sequence, perception verbs induce the possibility of pseudo-relatives which are prefered to relative clauses and bypass them for interpretation. The structure of a pseudo-relative is different than a relative clause (the PR is in a sisterhood relation with the NP compared to a embeded relation for relative clause) so we expect no differences between high and low condition within the percep condition.
 
 ```{r}
 data <- read.csv(file="https://raw.githubusercontent.com/anthdr/Statistique-M2/master/statistique%20descriptive/projet%20final/data.csv", header=TRUE, sep=",")
@@ -45,7 +47,7 @@ ggplot(data=data) +
   geom_bar(mapping = aes(x = id, y = cor.equation), stat  = "summary")
 ```
 
-We can see that there is variablity in data
+We can see that there is variablity in data throughout participants.
 
 Second, I plot attachment for each participant
 
@@ -96,7 +98,8 @@ ggplot(data=datanomath) +
   ggtitle("Non-efficient in math") 
 ```
 
-These are globally the same results, the only different trend is that the efficient group have slightly more high-attachments for the low condition whereas the non-efficient group have slightly more high-attachment for the high condition.
+These are globally the same results, the only different trend is that the efficient group have slightly more high-attachments for the low condition whereas the non-efficient group have slightly more high-attachment for the high condition (which is contrary to the expected results, participants efficient in maths should be more subject to priming).
+Also the percep condition seems to return less high-attachments.
 
 Next, I will select only correct answers to equation to report high-attachment (for both groups), and directly plot them.
 
@@ -111,8 +114,9 @@ ggplot(data=datanomath.onlygood) +
   ggtitle("Non-efficient in math with only correct answers") 
 ```
 
-The graph of the efficient group in math with and without good responses follow the same pattern.
-The non-efficient group shows a drop of high attachment in the low condition. However, this graph is plotted on a very limited set of trials (68).
+The graphs of the efficient group in math with and without good responses follow the same pattern.
+The non-efficient group shows a higher drop of high attachment in the low condition (as expected but too drastic for the percep condition which is not supposed to be subject to priming). However, this graph is plotted on a very limited set of trials (68).
+The percep condition now return more high attachment for the efficient group, but not for the non-efficient group.
 
 Continuing with the efficient group with good answers, I plot the first and second half of the experiment.
 
@@ -127,8 +131,9 @@ ggplot(data=datamath.onlygood.secondhalf) +
   ggtitle("Efficient in math with only correct answers, second half") 
 ```
 
-I can see that data in the first half yield more high attachment in the low condition.
-In the second half, no major differencies are observed. Percep returned slightly more high-attachment in the high condition than the low.
+I can see that data in the first half yield more high-attachments in the low condition.
+Percep still return more high-attachments than stat.
+In the second half, no differencies are shown between the high and low condition within the stat condition. Percep returned more high-attachment in the high condition than the low.
 
 To see if we can observe such observation on all participant, I plot with all trials with good answers, first and second half
 
@@ -168,7 +173,9 @@ ggplot(data=data.higheq) +
   ggtitle("Overall with high response time in equation") 
 ```
 
-No major differencies are observed.
+No major differencies are observed for the stat condition.
+However, low response time in equation return more high-attachments in the high condition and high response time return more high-attachments in the low condition (equation for the percep condition should not impact attachment, but we see that response time for equation have a greater impact for the percep condition than the stat condition).
+
 
 Second, I split groups between low and high completion RT and directly plot it
 
@@ -183,11 +190,12 @@ ggplot(data=data.highcomp) +
   ggtitle("Overall with high response time in completion") 
 ```
 
-Here again, no major differencies are observed.
+Here again, no major differencies are observed but I will still talk about these little tendencies in accordance for my theory.
+High response time in completion yields more high-attachments in the high condition, the interpretation of a pseudo-relative seems to rise to over time.
+Low response time in completion yields more hjgh-attachments in the high condition, the effect of priming seems to decay over time.
 
 
 I now plot high-attachments in the efficient group with good responses for both completion and equation response time. 
-
 
 ```{r}
 datamath.onlygood.loweq <- filter(datamath.onlygood, datamath.onlygood$RT.equation < mean.eq)
@@ -208,4 +216,6 @@ ggplot(data=datamath.onlygood.highcomp) +
   ggtitle("Efficient in math with only correct answers, high completion time") 
 ```
 
+We can see that low completion and low equation time give essentially the same pattern: the percep condition return more high-attachment (with slight difference for equation) and low condition returns more high-attachments within the stat condition.
+As for the high completion and equation time, the percep low condition returns a very high amount of high-attachment (this contradict what I plotted just before, the interpretation of the pseudo-relative does not rise over time).
 
